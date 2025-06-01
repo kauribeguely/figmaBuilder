@@ -9,69 +9,9 @@
 
     <div id="app"></div>
 
-  <script>
-    let figmaData;
-    fetch('figma-proxy.php')
-      .then(response => {
-        // if (!response.ok) throw new Error('Network response was not ok');        
-        return response.json();
-      })
-      .then(data => {
-        // document.getElementById('output').textContent = JSON.stringify(data, null, 2);
-        console.log(data);
-        figmaData = data;
-        renderResponse();
-      })
-      .catch(error => {
-        document.getElementById('output').textContent = 'Error: ' + error.message;
-      });
-
-
-    // Utility to convert Figma's style object to CSS
-    function applyStyle(el, style) {
-    if (!style) return;
-    el.style.fontFamily = style.fontFamily || "";
-    el.style.fontSize = style.fontSize + "px" || "";
-    el.style.fontWeight = style.fontWeight || "";
-    el.style.letterSpacing = style.letterSpacing + "px" || "";
-    el.style.lineHeight = style.lineHeightPx + "px" || "";
-    el.style.textAlign = (style.textAlignHorizontal || "").toLowerCase();
-    el.style.display = "block";
-    el.style.margin = "1rem 0";
-    }
-
-    function renderResponse()
-    {
-        // Render logic
-        const app = document.getElementById("app");
-
-        figmaData.document.children.forEach(canvas => {
-        const section = document.createElement("section");
-        section.style.padding = "2rem";
-        section.style.border = "1px solid #ccc";
-
-        canvas.children.forEach(frame => {
-            if (frame.children) {
-            frame.children.forEach(child => {
-                let el;
-                if (child.type === "TEXT") {
-                el = document.createElement("div");
-                el.textContent = child.characters;
-                applyStyle(el, child.style);
-                } else {
-                el = document.createElement("div");
-                el.textContent = `[Unsupported type: ${child.type}]`;
-                }
-                section.appendChild(el);
-            });
-            }
-        });
-
-        app.appendChild(section);
-        });
-    }
-
-    
-  </script>
+    <script src="script.js"></script>
+    <styles>
+      
+    </styles>
 </body>
 </html>
