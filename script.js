@@ -10,7 +10,7 @@ function fetchData()
     })
     .then(data => {
       // document.getElementById('output').textContent = JSON.stringify(data, null, 2);
-      // console.log(data.document.children[0].children[0]);
+      console.log(data.document.children[0].children[0]);
       console.log(data);
       figmaData = data;
       renderResponse();
@@ -511,7 +511,7 @@ function dummyData()
       "linkAccess": "view"
   }
   renderResponse();
-  
+
   console.log(figmaData.document.children[0].children[0]);
 }
 
@@ -534,6 +534,10 @@ if (!obj.style) return;
   el.style.letterSpacing = style.letterSpacing + "px" || "";
   el.style.lineHeight = style.lineHeightPx + "px" || "";
   el.style.textAlign = (style.textAlignHorizontal || "").toLowerCase();
+  if(obj.fills.length > 0)
+  {
+    el.style.color = convertColorObjectToCssRgba(obj.fills[0].color);
+  }
   // el.style.display = "block";
   // el.style.margin = "1rem 0";
 
@@ -589,6 +593,17 @@ function applyFrameStyles(element, object)
   elS.paddingBottom = object.paddingBottom + 'px';
   elS.gap = object.itemSpacing + 'px';
   if(object.layoutMode == 'VERTICAL')  elS.flexDirection = 'column';
+  elS.backgroundColor = convertColorObjectToCssRgba(object.backgroundColor);
+}
+
+
+function convertColorObjectToCssRgba(colorObj) {
+  const r255 = Math.round(colorObj.r * 255);
+  const g255 = Math.round(colorObj.g * 255);
+  const b255 = Math.round(colorObj.b * 255);
+  const a = colorObj.a; // Alpha is already in 0-1 range
+
+  return `rgba(${r255}, ${g255}, ${b255}, ${a})`;
 }
 
 function renderResponseOnAllChildren(parent, parentDiv)
