@@ -592,6 +592,17 @@ function applyFrameStyles(element, object)
   elS.paddingTop = object.paddingTop + 'px';
   elS.paddingBottom = object.paddingBottom + 'px';
   elS.gap = object.itemSpacing + 'px';
+
+  //TODO does this primary base on if horizontal or vertical? will need to change alignItems or justifyContent
+  if(object.primaryAxisAlignItems == "SPACE_BETWEEN")
+  {
+    elS.justifyContent = "space-between";
+  }
+  else if(object.primaryAxisAlignItems == "CENTER")
+  {
+    elS.justifyContent = "center";
+  }
+  
   if(object.layoutMode == 'VERTICAL')  elS.flexDirection = 'column';
   elS.backgroundColor = convertColorObjectToCssRgba(object.backgroundColor);
 }
