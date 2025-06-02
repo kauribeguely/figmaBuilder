@@ -8,7 +8,7 @@ $fileKey = 'yt5bIIAFtxVtpBHHCkarUB'; // Replace with your file key
 
 // https://api.figma.com/v1/images/$fileKey
 
-
+https://api.figma.com/v1/files/yt5bIIAFtxVtpBHHCkarUB/images
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, "https://api.figma.com/v1/files/$fileKey");
 curl_setopt($ch, CURLOPT_HTTPHEADER, [

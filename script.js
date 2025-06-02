@@ -1,5 +1,6 @@
-let figmaData;
-
+let figmaData, imageData;
+let allFetched = false;
+let fetchSuccess = 0;
 
 function fetchData()
 {
@@ -13,13 +14,37 @@ function fetchData()
       console.log(data.document.children[0].children[0]);
       console.log(data);
       figmaData = data;
-      renderResponse();
+      fetchSuccess++;
+      if(fetchSuccess == 2)
+      {
+        renderResponse();
+      }
     })
     .catch(error => {
-      document.getElementById('output').textContent = 'Error: ' + error.message;
+      document.getElementById('output').textContent += 'Error: ' + error.message;
     });
 
+    fetch('figma-images.php')
+      .then(response => {
+        // if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+      })
+      .then(data => {
+        console.log('Images: ');
+        console.log(data);
+        imageData = data;
+        fetchSuccess++;
+        if(fetchSuccess == 2)
+        {
+          renderResponse();
+        }
+      })
+      .catch(error => {
+        document.getElementById('output').textContent += 'ImgError: ' + error.message;
+      });
 }
+
+
 
 function dummyData()
 {
@@ -593,7 +618,11 @@ function applyFrameStyles(element, object)
   elS.paddingBottom = object.paddingBottom + 'px';
   elS.gap = object.itemSpacing + 'px';
 
-  //TODO does this primary base on if horizontal or vertical? will need to change alignItems or justifyContent
+  if(object.layoutMode == 'VERTICAL')  elS.flexDirection = 'column';
+
+  if(object.layoutWrap == "WRAP") elS.flexWrap = 'wrap';
+  
+  //TODO does this primary base on if layoutMode horizontal or vertical? will need to change alignItems or justifyContent
   if(object.primaryAxisAlignItems == "SPACE_BETWEEN")
   {
     elS.justifyContent = "space-between";
@@ -602,8 +631,8 @@ function applyFrameStyles(element, object)
   {
     elS.justifyContent = "center";
   }
-  
-  if(object.layoutMode == 'VERTICAL')  elS.flexDirection = 'column';
+
+
   elS.backgroundColor = convertColorObjectToCssRgba(object.backgroundColor);
 }
 
@@ -650,7 +679,9 @@ function renderSingleChild(child, section)
       if(child.fills[0].type == 'IMAGE')
       {
         el = document.createElement("img");
-        el.src = 'https://placehold.co/600x600';
+        const src = imageData.meta.images[child.fills[0].imageRef];
+        el.src = src;
+        // el.src = 'https://placehold.co/600x600';
         // TODO get images from file too, match with child.fills[0].imageRef
       }
 
