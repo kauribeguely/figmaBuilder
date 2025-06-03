@@ -1,0 +1,19 @@
+
+  .frame
+  {
+    display: flex;
+    box-sizing: border-box;
+  }
+
+  h1
+  {
+    margin: 0px;
+    overflow-wrap: break-word;
+  }
+
+  section
+  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
