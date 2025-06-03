@@ -679,12 +679,13 @@ function renderSingleChild(child, section)
     renderFills(el, child);
     // renderResponseOnAllChildren(child, el);
   }
-//   else if (child.type === "VECTOR")
-//   {
-//     el = document.createElement("div");
-//     renderFills(el, child);
-//     // renderResponseOnAllChildren(child, el);
-//   }
+  else if (child.type === "VECTOR")
+  {
+    el = document.createElement("div");
+    el.textContent = 'X';
+    renderFills(el, child);
+    // renderResponseOnAllChildren(child, el);
+  }
   else
   {
     el = document.createElement("p");
