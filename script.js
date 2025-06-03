@@ -541,6 +541,7 @@ function dummyData()
 }
 
 // dummyData();
+// dummyData2();
 fetchData();
 
 
@@ -548,10 +549,11 @@ fetchData();
 // Utility to convert Figma's style object to CSS
 function applyStyle(el, obj) {
 
+    if(obj.absoluteBoundingBox){
   el.style.width = obj.absoluteBoundingBox.width + "px";
   el.style.height = obj.absoluteBoundingBox.height + "px";
-
-if (!obj.style) return;
+    }
+    if (!obj.style) return;
  const style = obj.style;
   el.style.fontFamily = style.fontFamily || "";
   el.style.fontSize = style.fontSize + "px" || "";
@@ -665,6 +667,7 @@ function renderSingleChild(child, section)
     el = document.createElement("div");
     el.classList.add('frame');
     applyFrameStyles(el, child);
+    renderFills(el, child);
     if(child.children.length > 0)
     {
       renderResponseOnAllChildren(child, el);
@@ -673,21 +676,15 @@ function renderSingleChild(child, section)
   else if (child.type === "RECTANGLE")
   {
     el = document.createElement("div");
-    if(child.fills.length > 0)
-    {
-
-      if(child.fills[0].type == 'IMAGE')
-      {
-        el = document.createElement("img");
-        const src = imageData.meta.images[child.fills[0].imageRef];
-        el.src = src;
-        // el.src = 'https://placehold.co/600x600';
-        // TODO get images from file too, match with child.fills[0].imageRef
-      }
-
-    }
+    renderFills(el, child);
     // renderResponseOnAllChildren(child, el);
   }
+//   else if (child.type === "VECTOR")
+//   {
+//     el = document.createElement("div");
+//     renderFills(el, child);
+//     // renderResponseOnAllChildren(child, el);
+//   }
   else
   {
     el = document.createElement("p");
@@ -696,4 +693,26 @@ function renderSingleChild(child, section)
   el.id = child.name;
   applyStyle(el, child);
   section.appendChild(el);
+}
+
+function renderFills(el, obj)
+{
+    if(obj.fills.length > 0)
+    {
+
+      if(obj.fills[0].type == 'IMAGE')
+      {
+        // el = document.createElement("img");
+        const src = imageData.meta.images[obj.fills[0].imageRef];
+        // el.src = src;
+        el.style.backgroundImage = "url("+src+")";
+        // el.src = 'https://placehold.co/600x600';
+        // TODO get images from file too, match with child.fills[0].imageRef
+      }
+      else if(obj.fills[0].type == 'SOLID')
+      {
+        el.style.backgroundColor = convertColorObjectToCssRgba(obj.fills[0].color);
+      }
+
+    }
 }

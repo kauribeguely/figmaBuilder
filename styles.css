@@ -3,6 +3,7 @@
   {
     display: flex;
     box-sizing: border-box;
+    background-size: cover;
   }
 
   h1
@@ -16,4 +17,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  @font-face {
+    font-family: Integral CF;
+    src: url('integral.otf');
   }
