@@ -658,11 +658,12 @@ function renderResponseOnAllChildren(parent, parentDiv)
 function renderSingleChild(child, section)
 {
   let el;
+  if(!child.visible === false) return;
   if (child.type === "TEXT") {
     el = document.createElement("H1");
     el.textContent = child.characters;
   }
-  else if (child.type === "FRAME")
+  else if (child.type === "FRAME" || child.type === "GROUP")
   {
     el = document.createElement("div");
     el.classList.add('frame');
@@ -688,12 +689,14 @@ function renderSingleChild(child, section)
   }
   else
   {
-    el = document.createElement("p");
-    el.textContent = `[Unsupported type: ${child.type}]`;
+    console.log(`[Unsupported type: ${child.type}]`);
   }
-  el.id = child.name;
-  applyStyle(el, child);
-  section.appendChild(el);
+  if(el) 
+    {
+            el.id = child.name;
+            applyStyle(el, child);
+            section.appendChild(el);
+    }
 }
 
 function renderFills(el, obj)
